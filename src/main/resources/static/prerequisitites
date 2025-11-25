@@ -1,0 +1,9 @@
+SET ENVIRONMENT VARIABLE:
+JWT_SECRET=X7kP9mL2qR4tY6uI8oJ0pW3eV5bN1xZ2cD4fH6gJ8kL0mN2oP4qR6tY8uI0jL2wXabcdEFGHijklMNOPqrstUVWXyz0123456789
+
+Change the DB Credentials Accordingly in the application.properties
+spring.datasource.url=jdbc:postgresql://localhost:5432/learn_db
+spring.datasource.username=root
+spring.datasource.password=root
+
+Refer test.csv under src/main/resources/test.csv for the CSV Format.
