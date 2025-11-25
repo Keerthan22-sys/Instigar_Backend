@@ -4,7 +4,7 @@ WORKDIR /app
 # Copy Maven files first for better caching
 COPY pom.xml .
 COPY mvnw .
-COPY .mvn .mvn
+COPY .mvn .mvn/
 # Copy source code
 COPY src ./src
 # Build the JAR (skip tests for faster builds)
