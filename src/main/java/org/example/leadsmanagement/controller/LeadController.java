@@ -15,7 +15,7 @@ import java.util.List;
 @RequestMapping("/api/leads")
 @SecurityRequirement(name = "bearerAuth")
 //@CrossOrigin(origins = "https://yourdomain.com")
-@CrossOrigin(origins = "http://localhost:3001", allowCredentials = "true")
+//@CrossOrigin(origins = "http://localhost:3001", allowCredentials = "true")
 public class LeadController {
     @Autowired
     private LeadService leadService;

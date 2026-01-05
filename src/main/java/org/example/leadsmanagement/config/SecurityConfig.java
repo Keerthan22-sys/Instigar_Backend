@@ -1,5 +1,6 @@
 package org.example.leadsmanagement.config;
 
+import lombok.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -43,7 +44,7 @@ public class SecurityConfig {
         configuration.setAllowedOrigins(Arrays.asList(
                 "http://localhost:3000",
                 "http://localhost:3001",
-                "https://instigar.vercel.app/", // ⚠️ Replace with YOUR Vercel URL
+                "https://instigar.vercel.app", // ⚠️ Replace with YOUR Vercel URL
                 "https://*.vercel.app"
         ));
 

@@ -22,7 +22,7 @@ import java.security.Principal;
 @RequestMapping("/api/leads/csv")
 @SecurityRequirement(name = "bearerAuth")
 //@CrossOrigin(origins = "https://yourdomain.com")
-@CrossOrigin(origins = "http://localhost:3001", allowCredentials = "true")
+//@CrossOrigin(origins = "http://localhost:3001", allowCredentials = "true")
 public class LeadCsvController {
     @Autowired
     private LeadService leadService;
