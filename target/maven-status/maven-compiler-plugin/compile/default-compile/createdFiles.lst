@@ -6,6 +6,7 @@ org/example/leadsmanagement/model/Lead.class
 org/example/leadsmanagement/service/LeadService.class
 org/example/leadsmanagement/controller/LeadController.class
 org/example/leadsmanagement/LeadsManagementApplication.class
+org/example/leadsmanagement/controller/HealthController.class
 org/example/leadsmanagement/service/UserService.class
 org/example/leadsmanagement/repository/UserRepository.class
 org/example/leadsmanagement/repository/LeadRepository.class

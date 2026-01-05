@@ -4,6 +4,7 @@
 /Users/keerthangowdas/Documents/GitHub/LeadsManagement/src/main/java/org/example/leadsmanagement/config/UserDetailsServiceImpl.java
 /Users/keerthangowdas/Documents/GitHub/LeadsManagement/src/main/java/org/example/leadsmanagement/config/WebConfig.java
 /Users/keerthangowdas/Documents/GitHub/LeadsManagement/src/main/java/org/example/leadsmanagement/controller/AuthController.java
+/Users/keerthangowdas/Documents/GitHub/LeadsManagement/src/main/java/org/example/leadsmanagement/controller/HealthController.java
 /Users/keerthangowdas/Documents/GitHub/LeadsManagement/src/main/java/org/example/leadsmanagement/controller/LeadController.java
 /Users/keerthangowdas/Documents/GitHub/LeadsManagement/src/main/java/org/example/leadsmanagement/controller/LeadCsvController.java
 /Users/keerthangowdas/Documents/GitHub/LeadsManagement/src/main/java/org/example/leadsmanagement/model/Lead.java
