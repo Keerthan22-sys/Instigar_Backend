@@ -8,6 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import java.security.Principal;
 import java.util.List;
@@ -16,6 +20,7 @@ import java.util.List;
 @SecurityRequirement(name = "bearerAuth")
 //@CrossOrigin(origins = "https://yourdomain.com")
 //@CrossOrigin(origins = "http://localhost:3001", allowCredentials = "true")
+@CrossOrigin(origins = {"https://instigar.vercel.app"})
 public class LeadController {
     @Autowired
     private LeadService leadService;
@@ -80,5 +85,21 @@ public class LeadController {
             @RequestParam(required = false) String endDate,
             @RequestParam(required = false) String type) {
         return ResponseEntity.ok(leadService.filterLeads(stage, source, startDate, endDate,type));
+    }
+
+    @GetMapping("/debug-auth")
+    public ResponseEntity<?> debugAuth(Principal principal) {
+        if (principal == null) {
+            return ResponseEntity.ok(Map.of("error", "No authentication"));
+        }
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        return ResponseEntity.ok(Map.of(
+                "username", principal.getName(),
+                "authorities", auth.getAuthorities().stream()
+                        .map(a -> a.getAuthority())
+                        .collect(Collectors.toList())
+        ));
     }
 }

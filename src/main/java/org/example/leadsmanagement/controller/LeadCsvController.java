@@ -23,6 +23,7 @@ import java.security.Principal;
 @SecurityRequirement(name = "bearerAuth")
 //@CrossOrigin(origins = "https://yourdomain.com")
 //@CrossOrigin(origins = "http://localhost:3001", allowCredentials = "true")
+@CrossOrigin(origins = {"https://instigar.vercel.app"})
 public class LeadCsvController {
     @Autowired
     private LeadService leadService;
