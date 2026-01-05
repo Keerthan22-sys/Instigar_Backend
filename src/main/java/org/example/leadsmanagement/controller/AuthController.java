@@ -29,50 +29,67 @@ public class AuthController {
     @Autowired
     private UserService userService;
 
-    // Inject JWT secret from application properties
-    @Value("${jwt.secret:defaultSecretKeyForDevelopmentOnlyMinimum32Characters!@#$%}")
-    private String jwtSecretString;
+    @Value("${jwt.secret}")
+    private String jwtSecret;
 
     private SecretKey getSigningKey() {
-        // Ensure key is at least 256 bits (32 bytes)
-        byte[] keyBytes = jwtSecretString.getBytes(StandardCharsets.UTF_8);
-        return Keys.hmacShaKeyFor(keyBytes);
+        // Ensure consistent key generation
+        byte[] keyBytes = jwtSecret.getBytes(StandardCharsets.UTF_8);
+        // Pad or truncate to 256 bits (32 bytes) for HS256
+        byte[] paddedKey = new byte[32];
+        System.arraycopy(keyBytes, 0, paddedKey, 0, Math.min(keyBytes.length, 32));
+        return Keys.hmacShaKeyFor(paddedKey);
     }
 
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> login(@RequestBody Map<String, String> credentials) {
-        String username = credentials.get("username");
-        String password = credentials.get("password");
+        try {
+            String username = credentials.get("username");
+            String password = credentials.get("password");
 
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(username, password));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(username, password));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        String token = Jwts.builder()
-                .setSubject(username)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 86400000)) // 24 hours
-                .signWith(getSigningKey())
-                .compact();
+            String token = Jwts.builder()
+                    .setSubject(username)
+                    .setIssuedAt(new Date())
+                    .setExpiration(new Date(System.currentTimeMillis() + 86400000)) // 24 hours
+                    .signWith(getSigningKey())
+                    .compact();
 
-        Map<String, String> response = new HashMap<>();
-        response.put("token", token);
-        return ResponseEntity.ok(response);
+            Map<String, String> response = new HashMap<>();
+            response.put("token", token);
+            response.put("username", username);
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("error", "Invalid credentials");
+            return ResponseEntity.status(401).body(error);
+        }
     }
 
     @PostMapping("/register")
     public ResponseEntity<Map<String, Object>> register(@RequestBody Map<String, String> userData) {
-        String username = userData.get("username");
-        String password = userData.get("password");
-        String role = userData.get("role");
+        try {
+            String username = userData.get("username");
+            String password = userData.get("password");
+            String role = userData.get("role");
 
-        User user = userService.registerUser(username, password, role);
+            User user = userService.registerUser(username, password, role);
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("message", "User registered successfully");
-        response.put("username", user.getUsername());
-        response.put("role", user.getRole());
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "User registered successfully");
+            response.put("username", user.getUsername());
+            response.put("role", user.getRole());
 
-        return ResponseEntity.ok(response);
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            Map<String, Object> error = new HashMap<>();
+            error.put("error", "Registration failed: " + e.getMessage());
+            return ResponseEntity.status(400).body(error);
+        }
     }
 }

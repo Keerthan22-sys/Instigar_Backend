@@ -24,16 +24,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final UserDetailsService userDetailsService;
 
-    @Value("${jwt.secret:defaultSecretKeyForDevelopmentOnlyMinimum32Characters!@#$%}")
-    private String jwtSecretString;
+    @Value("${jwt.secret}")
+    private String jwtSecret;
 
     public JwtAuthenticationFilter(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
 
     private SecretKey getSigningKey() {
-        byte[] keyBytes = jwtSecretString.getBytes(StandardCharsets.UTF_8);
-        return Keys.hmacShaKeyFor(keyBytes);
+        // MUST be identical to AuthController
+        byte[] keyBytes = jwtSecret.getBytes(StandardCharsets.UTF_8);
+        byte[] paddedKey = new byte[32];
+        System.arraycopy(keyBytes, 0, paddedKey, 0, Math.min(keyBytes.length, 32));
+        return Keys.hmacShaKeyFor(paddedKey);
     }
 
     @Override
